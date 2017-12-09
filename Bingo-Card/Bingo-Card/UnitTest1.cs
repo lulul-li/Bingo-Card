@@ -33,20 +33,31 @@ namespace Bingo_Card
 
     public class BingoCard
     {
+        private static Dictionary<int, string> columnName = new Dictionary<int, string>()
+        {
+            {0, "B"},
+            {1, "I"},
+            {2, "N"},
+            {3, "G"},
+            {4, "O"},
+        };
+
         public static string[] GetCard()
         {
             var card = new string[24];
             for (var i = 0; i < card.Length; i++)
             {
-                var row = i / 5;
-                var min = i + row * 15;
+                var index = i > 10 ? i + 1 : i;
+                var row = index / 5;
+
+                var min = index + row * 15;
                 var max = min + 14;
+                card[i] = columnName[row] + new Random().Next(min, max);
                 while (card.Distinct().Count() < i + 1)
                 {
-                    card[i] = "B" + new Random().Next(min, max);
+                    card[i] = columnName[row] + new Random().Next(min, max);
                 }
             }
-            ;
             return card;
         }
     }
