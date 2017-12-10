@@ -17,6 +17,7 @@ namespace Bingo_Card
 
         private static int _range = 15;
         private static int _columns = 5;
+        private static int _3rdColumn = 10;
 
         public static string[] Card { get; set; }
 
@@ -36,21 +37,19 @@ namespace Bingo_Card
         {
             for (var i = 0; i < Card.Length; i++)
             {
-                var row = GetIndex(i) / _columns;
-                var min = row * _range + 1;
-                var max = (row + 1) * _range;
+                var min = GetColumnIndex(i) * _range + 1;
+                var max = (GetColumnIndex(i) + 1) * _range;
 
-                Card[i] = _columnName[row] + new Random().Next(min, max);
                 while (EachNumberOnCardIsNotUnique(i))
                 {
-                    Card[i] = _columnName[row] + new Random().Next(min, max);
+                    Card[i] = _columnName[GetColumnIndex(i)] + new Random().Next(min, max);
                 }
             }
         }
 
-        private static int GetIndex(int i)
+        private static int GetColumnIndex(int i)
         {
-            return i > 10 ? i + 1 : i;
+            return (i > _3rdColumn ? i + 1 : i) / _columns;
         }
 
         private static bool EachNumberOnCardIsNotUnique(int i)
