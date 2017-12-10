@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace Bingo_Card
@@ -29,36 +28,14 @@ namespace Bingo_Card
             var numbers = BingoCard.GetCard().Where(x => x.StartsWith(column)).ToList();
             Assert.AreEqual(count, numbers.Count);
         }
-    }
 
-    public class BingoCard
-    {
-        private static Dictionary<int, string> columnName = new Dictionary<int, string>()
+        [Test]
+        public void NumbersAreOrderedByColumn()
         {
-            {0, "B"},
-            {1, "I"},
-            {2, "N"},
-            {3, "G"},
-            {4, "O"},
-        };
+            var columns = string.Join("", BingoCard.GetCard().ToList()
+                .Select(x => x.Substring(0, 1)).ToArray());
 
-        public static string[] GetCard()
-        {
-            var card = new string[24];
-            for (var i = 0; i < card.Length; i++)
-            {
-                var index = i > 10 ? i + 1 : i;
-                var row = index / 5;
-
-                var min = index + row * 15;
-                var max = min + 14;
-                card[i] = columnName[row] + new Random().Next(min, max);
-                while (card.Distinct().Count() < i + 1)
-                {
-                    card[i] = columnName[row] + new Random().Next(min, max);
-                }
-            }
-            return card;
+            Assert.IsTrue(Regex.IsMatch(columns, "^[B]*[I]*[N]*[G]*[O]*$"));
         }
     }
 }
