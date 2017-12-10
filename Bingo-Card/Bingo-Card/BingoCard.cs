@@ -16,7 +16,7 @@ namespace Bingo_Card
         };
 
         private static int _range = 15;
-        private static int _columns=5;
+        private static int _columns = 5;
 
         public static string[] Card { get; set; }
 
@@ -37,8 +37,8 @@ namespace Bingo_Card
             for (var i = 0; i < Card.Length; i++)
             {
                 var row = GetIndex(i) / _columns;
-                var min = GetIndex(i) + row * _range;
-                var max = min + _range - 1;
+                var min = row * _range + 1;
+                var max = (row + 1) * _range;
 
                 Card[i] = _columnName[row] + new Random().Next(min, max);
                 while (EachNumberOnCardIsNotUnique(i))
@@ -55,7 +55,7 @@ namespace Bingo_Card
 
         private static bool EachNumberOnCardIsNotUnique(int i)
         {
-            return Card.Distinct().Count() < i + 1;
+            return Card.Where(x => !string.IsNullOrEmpty(x)).Distinct().Count() <= i;
         }
     }
 }
