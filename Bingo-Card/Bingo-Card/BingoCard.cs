@@ -37,14 +37,17 @@ namespace Bingo_Card
         {
             for (var i = 0; i < Card.Length; i++)
             {
-                var min = GetColumnIndex(i) * _range + 1;
-                var max = (GetColumnIndex(i) + 1) * _range;
-
                 while (EachNumberOnCardIsNotUnique(i))
                 {
-                    Card[i] = _columnName[GetColumnIndex(i)] + new Random().Next(min, max);
+                    Card[i] = _columnName[GetColumnIndex(i)] + new Random().Next(Min(i), Min(i)+_range);
                 }
             }
+        }
+        
+
+        private static int Min(int i)
+        {
+            return GetColumnIndex(i) * _range + 1;
         }
 
         private static int GetColumnIndex(int i)
